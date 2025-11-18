@@ -1,7 +1,7 @@
 // utils/syncpayClient.js
 const axios = require("axios");
 
-const BASE = process.env.SYNCPAY_BASE_URL;
+const BASE = process.env.SYNCPAY_BASE_URL; // DEVE SER https://api.syncpay.com.br/
 const CLIENT_ID = process.env.SYNCPAY_CLIENT_ID;
 const CLIENT_SECRET = process.env.SYNCPAY_CLIENT_SECRET;
 
@@ -12,7 +12,8 @@ async function getToken() {
   const now = Date.now();
   if (cachedToken && now < expiration) return cachedToken;
 
-  const resp = await axios.post(`${BASE}/api/auth/v1/token`, {
+  // 🔥 ENDPOINT CORRETO DA API NOVA DA SYNCPAY
+  const resp = await axios.post(`${BASE}/oauth2/token`, {
     grant_type: "client_credentials",
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET
@@ -20,6 +21,7 @@ async function getToken() {
 
   cachedToken = resp.data.access_token;
   expiration = now + (resp.data.expires_in - 20) * 1000;
+
   return cachedToken;
 }
 
