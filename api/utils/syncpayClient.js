@@ -12,7 +12,7 @@ async function getToken() {
   const now = Date.now();
   if (cachedToken && now < expiration) return cachedToken;
 
-  const resp = await axios.post(`${BASE}/oauth/token`, {
+  const resp = await axios.post(`${BASE}/api/auth/v1/token`, {
     grant_type: "client_credentials",
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET
